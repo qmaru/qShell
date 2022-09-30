@@ -1,0 +1,50 @@
+// protoc --proto_path .\grpc\pb\ --go_out=. --go-grpc_out=. .\grpc\pb\shell.proto
+syntax = "proto3";
+
+package pb;
+
+option go_package = "grpc/libs/;libs";
+
+service ShellService {
+    rpc ServerCheck (Ping) returns (Pong) {};
+    rpc ListScripts (ListState) returns (ListResults) {};
+    rpc RunScript (RunMeta) returns (RunResults) {};
+    rpc UploadFile (FileMeta) returns (FileResults) {};
+}
+
+message Ping {
+  bool state = 1;
+}
+
+message Pong {
+  bool state = 1;
+  string message = 2;
+}
+
+message ListState {
+  bool state = 1;
+}
+
+message ListResults {
+  repeated string scripts = 1;
+}
+
+message RunMeta {
+  string script_name = 1;
+  repeated string script_paras = 2;
+}
+
+message RunResults {
+  string results = 1;
+}
+
+message FileMeta {
+  string md5 = 1;
+  string name = 2;
+  int64 size = 3;
+  bytes file= 4;
+}
+
+message FileResults {
+  bool state = 1;
+}
